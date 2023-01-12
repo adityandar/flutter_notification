@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_notification/notification_service.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -38,6 +39,11 @@ class HomePage extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     // Add trigger notification start
+                    NotificationService().addNotification(
+                      'ini testing',
+                      'apakah muncul?',
+                      DateTime.now().millisecondsSinceEpoch + 2000,
+                    );
                   },
                   child: Text(
                     'START!',
