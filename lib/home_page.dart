@@ -1,68 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_notification/notification_service.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  Timer? _countdownTimer;
-  Duration _podomoroDuration = Duration(seconds: 5);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  /// Timer related methods ///
-  // Step 3
-  void startTimer() {
-    _countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
-  }
-
-  // Step 4
-  void stopTimer() {
-    setState(() => _countdownTimer!.cancel());
-  }
-
-  // Step 5
-  void resetTimer() {
-    stopTimer();
-    setState(() => _podomoroDuration = Duration(seconds: 5));
-  }
-
-  // Step 6
-  void setCountDown() {
-    final reduceSecondsBy = 1;
-    setState(() {
-      final seconds = _podomoroDuration.inSeconds - reduceSecondsBy;
-      if (seconds < 1) {
-        _triggerEndPodomoroNotification();
-      }
-      if (seconds < 0) {
-        _countdownTimer!.cancel();
-        resetTimer();
-      } else {
-        _podomoroDuration = Duration(seconds: seconds);
-      }
-    });
-  }
-
-  void _triggerEndPodomoroNotification() {
-    NotificationService().addNotification(
-      title: 'Let\'s get a break!',
-      body: 'Don\'t forget to drink.',
-      endTime: DateTime.now().millisecondsSinceEpoch + 1000,
-      channelId: 'work-end',
-      channelName: 'work-end',
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +17,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                (_countdownTimer?.isActive ?? false)
-                    ? 'Good luck'
-                    : 'Start to Work',
+                'Start to Work',
                 style: titleTextStyle,
               ),
               SizedBox(height: 32),
@@ -90,7 +27,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.red.withOpacity(0.4),
                 child: Center(
                   child: Text(
-                    _podomoroDuration.inSeconds.toString(),
+                    '00:05', // set to dynamic current timer
                     style: timerTextStyle,
                   ),
                 ),
@@ -99,23 +36,11 @@ class _HomePageState extends State<HomePage> {
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: (_countdownTimer?.isActive ?? false)
-                      ? null
-                      : () {
-                          NotificationService().addNotification(
-                            title: 'Start Podomoro!',
-                            body: 'Let\'s focus!',
-                            endTime:
-                                DateTime.now().millisecondsSinceEpoch + 1000,
-                            channelId: 'work-start',
-                            channelName: 'work-start',
-                          );
-                          startTimer();
-                        },
+                  onPressed: () {
+                    // Add trigger notification start
+                  },
                   child: Text(
-                    (_countdownTimer?.isActive ?? false)
-                        ? 'GO WORK!'
-                        : 'START!',
+                    'START!',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_notification/home_page.dart';
-import 'package:flutter_notification/notification_service.dart';
 import 'package:oktoast/oktoast.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().setup();
   runApp(const MyApp());
 }
 
